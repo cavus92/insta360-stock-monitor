@@ -2,6 +2,12 @@ name: Insta360 Stock Monitor
 
 on:
   workflow_dispatch:
+    inputs:
+      test_email:
+        description: "Sadece e-posta gönderimini test et"
+        required: true
+        default: false
+        type: boolean
   schedule:
     - cron: "*/5 * * * *"
 
@@ -37,6 +43,7 @@ jobs:
           SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
           ALERT_EMAIL: ${{ secrets.ALERT_EMAIL }}
+          TEST_EMAIL: ${{ inputs.test_email || 'false' }}
         run: python stock_checker.py
 
       - name: Persist state
