@@ -150,6 +150,20 @@ def send_email(items: list[StockResult]) -> None:
 
 
 def main() -> int:
+    # Manual email test. This is enabled only when the workflow's
+    # manual "test_email" input is set to true.
+    if os.environ.get("TEST_EMAIL", "").lower() == "true":
+        test_item = StockResult(
+            name="TEST - Insta360 Stock Monitor",
+            url="https://shop.insta360turkiye.com/products/insta360-luna-ultra",
+            available=True,
+            variant_title="Email delivery test",
+            price="",
+        )
+        send_email([test_item])
+        print("TEST: E-posta başarıyla gönderildi.")
+        return 0
+
     old_state = load_state()
     new_state = old_state.copy()
     newly_available: list[StockResult] = []
